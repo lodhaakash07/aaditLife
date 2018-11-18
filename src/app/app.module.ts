@@ -8,6 +8,18 @@ import { StatusBar } from '@ionic-native/status-bar/ngx';
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
+import { AngularFireModule } from '@angular/fire';
+import { AngularFireAuthModule } from '@angular/fire/auth';
+import { IonicStorageModule } from '@ionic/storage';
+
+export const  firebase =  {
+    apiKey: "AIzaSyAPrA2TRP-YYhcVXnWWhbCfddHnu0kn_AA",
+    authDomain: "aaditfirebaseauth.firebaseapp.com",
+    databaseURL: "https://aaditfirebaseauth.firebaseio.com",
+    projectId: "aaditfirebaseauth",
+    storageBucket: "aaditfirebaseauth.appspot.com",
+    messagingSenderId: "48119150430"
+  };
 
 @NgModule({
   declarations: [AppComponent],
@@ -15,12 +27,15 @@ import { AppRoutingModule } from './app-routing.module';
   imports: [
     BrowserModule,
     IonicModule.forRoot(),
-    AppRoutingModule
+    AppRoutingModule,
+    AngularFireModule.initializeApp(firebase),
+    AngularFireAuthModule,
+    IonicStorageModule.forRoot()
   ],
   providers: [
     StatusBar,
     SplashScreen,
-    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
+    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
   ],
   bootstrap: [AppComponent]
 })

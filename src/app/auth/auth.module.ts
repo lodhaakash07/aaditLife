@@ -4,8 +4,9 @@ import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { RouterModule } from '@angular/router';
 
-import { HomePage } from './home.page';
-
+import { AuthPage } from './auth.page';
+import { AuthService } from './auth.provider'
+import { LogoutPage } from './logout.page'
 @NgModule({
   imports: [
     CommonModule,
@@ -14,10 +15,15 @@ import { HomePage } from './home.page';
     RouterModule.forChild([
       {
         path: '',
-        component: HomePage
+        component: AuthPage
+      },
+      {
+        path: 'logout',
+        component: LogoutPage
       }
     ])
   ],
-  declarations: [HomePage]
+  declarations: [AuthPage, LogoutPage],
+  providers: [AuthService]
 })
-export class HomePageModule {}
+export class AuthPageModule {}
