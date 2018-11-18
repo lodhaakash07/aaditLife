@@ -11,7 +11,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AngularFireModule } from '@angular/fire';
 import { AngularFireAuthModule } from '@angular/fire/auth';
 import { IonicStorageModule } from '@ionic/storage';
-
+import { AuthService } from './auth/auth.provider'
 export const  firebase =  {
     apiKey: "AIzaSyAPrA2TRP-YYhcVXnWWhbCfddHnu0kn_AA",
     authDomain: "aaditfirebaseauth.firebaseapp.com",
@@ -33,6 +33,7 @@ export const  firebase =  {
     IonicStorageModule.forRoot()
   ],
   providers: [
+    AuthService,
     StatusBar,
     SplashScreen,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },

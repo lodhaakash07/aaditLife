@@ -1,89 +1,36 @@
-import { Component, OnInit } from '@angular/core';
-import { AngularFireAuth } from '@angular/fire/auth';
-import { auth } from 'firebase/app';
+import { Component, AfterViewChecked, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { Storage } from '@ionic/storage';
+import { AuthService } from './auth.provider';
+
 
 @Component({
   selector: 'app-home',
   templateUrl: 'auth.page.html',
   styleUrls: ['auth.page.scss'],
 })
-export class AuthPage implements OnInit {
+export class AuthPage implements AfterViewChecked {
 
   private user;
-  constructor(private afAuth: AngularFireAuth,
-    private router: Router,
-    private storage: Storage) {
-    this.userLoginHandler();
-
+  constructor(private authService: AuthService,
+    private router: Router) {
   }
 
-  ngOnInit() {
+  ngAfterViewChecked() {
 
-  }
+    if(this.authService.isLoggedIn()) {
 
-  userLoginHandler(loggedIn?:boolean) {
-    if(loggedIn) {
-      this.router.navigate(['list'])
-    } else {
-      this.storage.get('userData').then((val) => {
-        this.user = val;
-        if (this.user) {
-          if (this.user.isNewUser) {
-            // Go to registration
-          } else {
-            this.router.navigate(['list'])
-          }
-        }
-      });
+      this.router.navigate(['list']);
     }
   }
 
   login() {
-    return this.afAuth.auth.signInWithPopup(new auth.GoogleAuthProvider())
-      .then((credential) => {
-        debugger
-        let userData = this.initiliseUserData(credential);
-        this.user = userData;
-        this.storage.set('userData', this.user);
-        this.userLoginHandler(true);
-      })
-  }
-
-  private initiliseUserData(credential) {
-    return {
-      isNewUser: credential.additionalUserInfo.isNewUser,
-      email: credential.additionalUserInfo.profile.email,
-      family_name: credential.additionalUserInfo.profile.family_name,
-      given_name: credential.additionalUserInfo.profile.given_name,
-      id: credential.additionalUserInfo.profile.id,
-      picture: credential.additionalUserInfo.profile.picture,
-      name: credential.additionalUserInfo.profile.name,
-      accessToken: credential.credential.accessToken,
-      idToken: credential.credential.idToken,
-      phoneNumber: credential.user.phoneNumber,
-      creationTime: credential.user.metadata.creationTime
-    }
-  }
-
-
-  logout() {
-    this.afAuth.auth.signOut();
+    this.authService.login();
+    let isLoggedIn = setInterval(()=> {
+      if(this.authService.isLoggedIn()) {
+        clearInterval(isLoggedIn);
+        this.router.navigate(['list']);
+      }
+    } , 500)
   }
 }
 
-
-interface User {
-  isNewUser: boolean;
-  email: string;
-  family_name: string;
-  given_name: string;
-  id: string;
-  picture: string;
-  name: string;
-  accessToken: string;
-  idToken: string;
-  phoneNumber: string;
-  creationTime: string;
-}
