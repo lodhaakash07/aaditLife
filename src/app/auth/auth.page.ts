@@ -8,19 +8,15 @@ import { AuthService } from './auth.provider';
   templateUrl: 'auth.page.html',
   styleUrls: ['auth.page.scss'],
 })
-export class AuthPage implements AfterViewChecked {
+export class AuthPage implements OnInit {
 
   private user;
   constructor(private authService: AuthService,
     private router: Router) {
   }
 
-  ngAfterViewChecked() {
+  ngOnInit() {
 
-    if(this.authService.isLoggedIn()) {
-
-      this.router.navigate(['list']);
-    }
   }
 
   login() {

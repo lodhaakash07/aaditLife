@@ -29,7 +29,7 @@ export class AuthService {
       this.storage.get('loggedInUser').then((val) => {
         if(!!val) {
           this.user = val;
-        }
+          this.router.navigate(['list']);
       });
     }
 
